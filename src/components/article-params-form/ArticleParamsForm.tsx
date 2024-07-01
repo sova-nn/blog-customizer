@@ -34,40 +34,41 @@ export const ArticleParamsForm = ({
 }: ArticleParamsProps) => {
 	const modalRef = useRef(null);
 
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [articleFormState, setArticleFormState] = useState(appState);
 
 	useOutsideClickClose({
-		isOpen,
+		isOpen: isMenuOpen,
 		rootRef: modalRef,
-		onClose: () => setIsOpen(false),
+		onClose: () => setIsMenuOpen(false),
 	});
 
 	const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setAppState(articleFormState);
-		setIsOpen(false);
+		setIsMenuOpen(false);
 	};
 
 	const onFormReset = () => {
 		setArticleFormState(defaultArticleState);
-		setIsOpen(false);
+		setAppState(defaultArticleState);
+		setIsMenuOpen(false);
 	};
 
 	return (
 		<div ref={modalRef}>
 			<ArrowButton
-				onClick={() => setIsOpen((isOpen: boolean) => !isOpen)}
-				isOpen={isOpen}
+				onClick={() => setIsMenuOpen((isOpen: boolean) => !isOpen)}
+				isOpen={isMenuOpen}
 			/>
 			<aside
 				className={clsx(styles.container, {
-					[styles.container_open]: isOpen,
+					[styles.container_open]: isMenuOpen,
 				})}>
 				<form
 					className={styles.form}
-					onSubmit={(e) => onFormSubmit(e)}
-					onReset={() => onFormReset()}>
+					onSubmit={onFormSubmit}
+					onReset={onFormReset}>
 					<Text as='h2' size={31} weight={800} uppercase family='open-sans'>
 						{title}
 					</Text>
